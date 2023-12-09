@@ -51,6 +51,39 @@ impl<'a> Map<'a> {
 }
 
 
+fn part2(input: &str) -> usize {
+    let map = Map::parse(input);
+    let currents = map
+        .network
+        .keys()
+        .filter(|k| k.ends_with('A'))
+        .copied()
+        .collect::<Vec<_>>();
+    let mut lowest: usize = 0;
+    for mut current in currents {
+        let mut directions = map.directions.iter().cycle();
+        let mut count = 0;
+        while !current.ends_with('Z') {
+            let node = map.network.get(current).unwrap();
+            count += 1;
+            match directions.next().unwrap() {
+                Direction::Left => current = node.0,
+                Direction::Right => current = node.1,
+            }
+        }
+        match lowest {
+            0 => lowest = count,
+            _ => lowest = lcm(lowest, count),
+        }
+    }
+    lowest
+}
+
+
+
+
+
+
 fn part1(input: &str) -> usize {
     let map = Map::parse(input);
     let mut current: &str = "AAA";
@@ -76,5 +109,6 @@ fn main() {
 
     println!("Part1:{}",part1(input));
 
+    println!("Part2:{}",part2(input));
 
 }
