@@ -36,12 +36,11 @@ impl Readings {
 }
 
 fn main() {
+    let input = include_str!("../input.txt");
 
-   
-   let input = include_str!("../input.txt");
+    println!("part1:{}", part1(input));
 
-   println!("part1:{}",part1(input));
-
+    println!("part2:{}",part2(input));
 }
 
 fn part1(input: &str) -> i32 {
@@ -51,6 +50,10 @@ fn part1(input: &str) -> i32 {
         .map(|r| r.predict_after())
         .sum()
 }
-
-
-
+fn part2(input: &str) -> i32 {
+    input
+        .lines()
+        .map(Readings::parse)
+        .map(|r| r.predict_before())
+        .sum()
+}
